@@ -1,6 +1,7 @@
 # convert_flac_to_opus
 A shell script with a misleading name (it doesn't only do flac) that converts files to opus using ffmpeg
 
+```
 Convert audio files in directory to opus streams while maintaining metadata
 Finds files recursively
 usage: convert_flac_to_opus.sh [options]
@@ -14,3 +15,4 @@ usage: convert_flac_to_opus.sh [options]
 -r        Removes old files after conversion
 -y        Skip verification
 -h        Show this help
+```
