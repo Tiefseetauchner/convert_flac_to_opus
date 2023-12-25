@@ -90,9 +90,9 @@ else
     echo "Converting with $THREADS processes (this might take a while depending on your files, if you have CPU to spare set -t higher, default is 1)"
 fi
 
-find $DIRECTORY -type f \
-    \( -iname "*${EXTENSIONS[0]}" $(if [ ${#EXTENSIONS[@]} -gt 1 ]; \
-    then printf -- '-o -iname *%s ' "${EXTENSIONS[@]:1}"; fi) \) \
+find "$DIRECTORY" -type f \
+    \( -iregex ".*${EXTENSIONS[0]}$" $(if [ ${#EXTENSIONS[@]} -gt 1 ]; \
+    then printf -- '-o -iregex .*%s$ ' "${EXTENSIONS[@]:1}"; fi) \) \
     -print0 | \
     xargs -0 -P $THREADS -I {} \
         ffmpeg -i "{}" \
@@ -103,5 +103,5 @@ find $DIRECTORY -type f \
         -y "{}.opus"
 
 if [ $REMOVE ]; then
-    find $DIRECTORY -type f \( -iname "*${EXTENSIONS[0]}" $(if [ ${#EXTENSIONS[@]} -gt 1 ]; then printf -- '-o -iname *%s ' "${EXTENSIONS[@]:1}"; fi) \) -exec rm {} \;
+    find "$DIRECTORY" -type f \( -iregex ".*${EXTENSIONS[0]}$" $(if [ ${#EXTENSIONS[@]} -gt 1 ]; then printf -- '-o -iregex .*%s$ ' "${EXTENSIONS[@]:1}"; fi) \) -exec rm {} \;
 fi
