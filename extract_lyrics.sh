@@ -11,13 +11,12 @@ usage() {
 -d dir    Directory containing the music files
 -t list   File types as a comma-separated list, e.g., mp3,flac,opus
 -v        Verbose mode (optional)
+-y        Skip confirmation check at the beginning
 -h        Show this help"
 }
 
 DIRECTORY="."
 EXTENSIONS=($(echo "mp3,flac,opus,m4a,wav" | tr ',' '\n'))
-VERBOSE=0
-SKIP_TEST=0
 
 while getopts "d:t:vyh" opt; do
     case $opt in
@@ -28,10 +27,10 @@ while getopts "d:t:vyh" opt; do
             EXTENSIONS=($(echo "$OPTARG" | tr ',' '\n'))
             ;;
         v)
-            VERBOSE=1
+            VERBOSE=YES
             ;;
         y)
-            SKIP_TEST=1
+            SKIP_TEST=YES
             ;;
         h)
             info
@@ -75,17 +74,18 @@ if [ ! $SKIP_TEST ]; then
             ;;
     esac
 else
-    echo "Converting with $THREADS processes (this might take a while depending on your files, if you have CPU to spare set -t higher, default is 1)"
+    echo "Extracting..."
 fi
 
 # Find and process files
 find "$DIRECTORY" -type f -iregex "$regex_pattern" -exec bash -c '
     for file; do
-        [[ $VERBOSE == 1 ]] && echo "Processing $file"
         lyrics=$(ffprobe -v error -show_entries format_tags=UNSYNCEDLYRICS -of default=noprint_wrappers=1:nokey=1 "$file")
         if [ ! -z "$lyrics" ]; then
             echo "$lyrics" > "${file%.*}.txt"
-            echo "Lyrics extracted for $file"
+            [ !! $VERBOSE ] && echo "Lyrics extracted for $file"
+        else
+            [ !! $VERBOSE ] && echo "No lyrics found for $file"
         fi
     done
 ' bash {} +
