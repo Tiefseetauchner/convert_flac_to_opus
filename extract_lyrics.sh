@@ -89,4 +89,3 @@ find "$DIRECTORY" -type f -iregex "$regex_pattern" -exec bash -c '
         fi
     done
 ' bash {} +
-``` &#8203;``【oaicite:0】``&#8203;
