@@ -17,6 +17,18 @@ usage: convert_flac_to_opus.sh [options]
 -h        Show this help
 ```
 
+# extract_lyrics
+Extract UNSYNCEDLYRICS metadata from audio files and save them as txt files in the same location as the audio file.
+
+```
+usage: extract_lyrics.sh [options]
+
+-d dir    Directory containing the music files
+-t list   File types as a comma-separated list, e.g., mp3,flac,opus
+-v        Verbose mode (optional)
+-h        Show this help"
+```
+
 # This is awful. How can I make more of this?
 
 You want to write *more* of these god awful scripts? Feel free! Make a fork and add your script in the same vein (like video conversion) or extend my script, and then make a pull request
